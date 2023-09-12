@@ -1,3 +1,5 @@
+using Contacts.Maui.Models;
+
 namespace Contacts.Maui.Views;
 
 public partial class AddContactPage : ContentPage
@@ -12,4 +14,28 @@ public partial class AddContactPage : ContentPage
         //Shell.Current.GoToAsync("..");    //.. 
         Shell.Current.GoToAsync($"//{nameof(ContactsPage)}"); // Must use abs path to identity the Mainpage by slash slash
     }
+
+    private void contactCtrl_OnSave(object sender , EventArgs e)
+    {
+        ContactRepository.AddContact(new Models.Contact()
+        {
+            Name = contactCtrl.Name ,
+            Email = contactCtrl.Email ,
+            Address = contactCtrl.Address ,
+            Phone = contactCtrl.Phone ,
+        });
+        Shell.Current.GoToAsync($"//{nameof(ContactsPage)}");
+    }
+    private void contactCtrl_OnCancel(object sender , EventArgs e)
+    {
+        Shell.Current.GoToAsync($"//{nameof(ContactsPage)}");
+    }
+
+    private void contactCtrl_OnError(object sender , string e)
+    {
+        DisplayAlert("Error" , e.ToString() , "OK");
+
+    }
+
+
 }

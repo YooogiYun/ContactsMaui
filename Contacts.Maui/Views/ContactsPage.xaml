@@ -3,18 +3,41 @@
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              Title="All Contacts">
-
-    <ListView x:Name="listContacts"
-              BackgroundColor="Transparent"
-              RowHeight="65"
-              ItemSelected="listContacts_ItemSelected"
-              ItemTapped="listContacts_ItemTapped"
-              SeparatorVisibility="Default">
-        <ListView.ItemTemplate>
-            <DataTemplate>
-                <TextCell Detail="{Binding Email}" Text="{Binding Name}" />
-            </DataTemplate>
-        </ListView.ItemTemplate>
-    </ListView>
+    <Grid Padding="4,8"
+          ColumnDefinitions="*"
+          RowDefinitions="50,*,50">
+        <SearchBar Grid.Row="0"
+                   x:Name="SearchBar"
+                   Grid.Column="0"
+                   Placeholder="Search Contact"
+                   TextChanged="SearchBar_TextChanged" />
+        <ListView x:Name="listContacts"
+                  Grid.Row="1"
+                  Grid.Column="0"
+                  BackgroundColor="Transparent"
+                  ItemSelected="listContacts_ItemSelected"
+                  ItemTapped="listContacts_ItemTapped"
+                  RowHeight="65"
+                  SeparatorVisibility="Default">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Detail="{Binding Email}" Text="{Binding Name}">
+                        <TextCell.ContextActions>
+                            <MenuItem IsDestructive="True"
+                                      Clicked="Delete_Clicked"
+                                      CommandParameter="{Binding .}"
+                                      Text="Delete" />
+                            <!--<MenuItem Text="Edit"/>-->
+                        </TextCell.ContextActions>
+                    </TextCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Button x:Name="btnAdd"
+                Grid.Row="2"
+                Grid.Column="0"
+                Clicked="btnAdd_Clicked"
+                Text="Add Contact" />
+    </Grid>
 
 </ContentPage>

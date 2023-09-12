@@ -10,11 +10,36 @@ public partial class EditContactPage : ContentPage
     {
         InitializeComponent();
     }
+    private void btnUpdate_Clicked(object sender , EventArgs e)
+    {
+        //if( nameValidator.IsNotValid )
+        //{
+        //    DisplayAlert("error" , "name is required." , "ok");
+        //    return;
+        //}
 
-    //private void btnCancel_Clicked(object sender , EventArgs e)
-    //{
-    //    Shell.Current.GoToAsync("..");
-    //}
+        //if( emailVaildator.IsNotValid )
+        //{
+        //    foreach( var error in emailVaildator.Errors )
+        //    {
+        //        DisplayAlert("Error" , error.ToString() , "OK");
+        //    }
+        //    return;
+        //}
+
+        _contact.Name = contactCtrl.Name;
+        _contact.Address = contactCtrl.Address;
+        _contact.Email = contactCtrl.Email;
+        _contact.Phone = contactCtrl.Phone;
+
+        ContactRepository.UpdateContact(_contact.Id , _contact);
+        Shell.Current.GoToAsync("..");
+    }
+
+    private void btnCancel_Clicked(object sender , EventArgs e)
+    {
+        Shell.Current.GoToAsync("..");
+    }
 
     public string ContactId
     {
@@ -22,6 +47,15 @@ public partial class EditContactPage : ContentPage
         {
             _contact = ContactRepository.GetContactById(Convert.ToInt32(value));
             //lblName.Text = _contact.Name;
+            contactCtrl.Name = _contact?.Name;
+            contactCtrl.Address = _contact?.Address;
+            contactCtrl.Email = _contact?.Email;
+            contactCtrl.Phone = _contact?.Phone;
         }
+    }
+
+    private void contactCtrl_OnError(object sender , string e)
+    {
+        DisplayAlert("Error" , e , "OK");
     }
 }
